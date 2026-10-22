@@ -1,81 +1,45 @@
 ---
 const ImageCollage = [
-  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
-  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
-  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
-  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691044/d5f73f8c-208e-42fb-84a2-24d047af8a4d_nfdgh0.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691041/e5de5a35-232f-4ac9-8b60-dd9ecaf7e681_wophc7.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691041/ab91ecf4-fa85-4719-a8d4-0cdcf8c6dbf7_nvspxm.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691039/4689bc90-d784-4698-b5fd-90aac2ee858a_wz8ofd.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691031/438088d6-86be-4cff-9666-43fa7183162e_gnuuev.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691030/4d040a9d-6aec-48e7-a6ce-a177571fde26_lrogbj.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691029/936f7705-416e-405d-9a36-49727ce03e78_jyhmj2.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691027/6bd2aeda-bc56-4376-bd34-5eb526c86421_nzfv9d.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691025/36f04c04-caf4-4c8e-acb6-6e9fb5f4f5ac_ioqvkh.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691025/36f04c04-caf4-4c8e-acb6-6e9fb5f4f5ac_ioqvkh.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691025/3d1aaa75-6a4a-48d7-a64b-e531585263e4_fe1b3y.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691023/07dcaaec-7a12-4a6d-b02a-58a7e53c54ee_vxmdfb.png",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/v1792691020/0c20987b-74b9-4e0f-96aa-bed36334f71c_ak5mq5.png",
 ];
+
+const loopImages = [...ImageCollage, ...ImageCollage];
 ---
 
 <section class="gallery-section">
+  <div class="gallery-header">
+   
+  </div>
 
+  <div class="infinite-carousel">
+    <div style="position:relative;">
+        <div class="degradado" style="position :absolute; width: 100%; height: 100%;z-index: 999;">
 
-  <div class="carousel" aria-label="Carrusel de imágenes">
-    <div class="carousel-track">
-      {ImageCollage.map((src, index) => (
-        <div class="slide">
-          <img src={src} alt={`Imagen ${index + 1}`} loading={index === 0 ? 'eager' : 'lazy'} />
         </div>
-      ))}
-    </div>
-
-    <button class="nav prev" type="button" aria-label="Imagen anterior">‹</button>
-    <button class="nav next" type="button" aria-label="Imagen siguiente">›</button>
-
-    <div class="dots" aria-label="Indicadores del carrusel">
-      {ImageCollage.map((_, index) => (
-        <button
-          class={`dot ${index === 0 ? 'active' : ''}`}
-          type="button"
-          aria-label={`Ir a la imagen ${index + 1}`}
-          data-index={index}
-        ></button>
-      ))}
+        <div class="infinite-track" style="z-index: 10;display:flex; gap: 29px;">
+        {loopImages.map((src, index) => (
+            <div>
+            <img src={src} style="box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;border-radius: 3px; width:380px; object-fit: cover;  height: 390px;"
+            alt={`Imagen ${(index % ImageCollage.length) + 1}`}
+                loading={index < 2 ? 'eager' : 'lazy'}>
+            </div>
+        ))}
+        </div>
     </div>
   </div>
 </section>
-
-<script>
-  const carousel = document.querySelector('.carousel');
-
-  if (carousel) {
-    const track = carousel.querySelector('.carousel-track');
-    const slides = Array.from(carousel.querySelectorAll('.slide'));
-    const dots = Array.from(carousel.querySelectorAll('.dot'));
-    const prevBtn = carousel.querySelector('.nav.prev');
-    const nextBtn = carousel.querySelector('.nav.next');
-
-    let currentIndex = 0;
-
-    const updateCarousel = () => {
-      if (!track) return;
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-      });
-    };
-
-    prevBtn?.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-      updateCarousel();
-    });
-
-    nextBtn?.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % slides.length;
-      updateCarousel();
-    });
-
-    dots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        currentIndex = Number(dot.dataset.index || 0);
-        updateCarousel();
-      });
-    });
-
-    updateCarousel();
-  }
-</script>
 
 <style>
   .gallery-section {
@@ -83,6 +47,7 @@ const ImageCollage = [
     margin: 48px auto 0;
     padding: 20px 0 0;
   }
+
 
   .gallery-header {
     text-align: center;
@@ -107,102 +72,44 @@ const ImageCollage = [
     font-family: 'Georgia', 'Times New Roman', serif;
   }
 
-  .carousel {
-    position: relative;
+  .infinite-carousel {
     overflow: hidden;
-    border-radius: 18px;
-    background: #f3efe8;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
-  }
+ }
 
-  .carousel-track {
+  .infinite-track {
     display: flex;
-    transition: transform 0.5s ease;
-    will-change: transform;
+    width: max-content;
+    animation: scroll 20s linear infinite;
   }
 
-  .slide {
-    flex: 0 0 100%;
-    min-width: 100%;
-    height: 480px;
+  .infinite-carousel:hover .infinite-track {
   }
 
-  .slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  .infinite-slide {
+    flex: 0 0 auto;
+    width: 320px;
+    height: 220px;
+    margin-right: 12px;
   }
 
-  .nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.45);
-    color: #fff;
-    font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-  }
 
-  .nav:hover {
-    background: rgba(0, 0, 0, 0.7);
-  }
-
-  .prev {
-    left: 16px;
-  }
-
-  .next {
-    right: 16px;
-  }
-
-  .dots {
-    position: absolute;
-    left: 50%;
-    bottom: 18px;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-  }
-
-  .dot {
-    width: 12px;
-    height: 12px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.2s ease;
-  }
-
-  .dot.active {
-    background: #fff;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.18);
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-20%);
+    }
   }
 
   @media (max-width: 640px) {
-    .slide {
-      height: 320px;
+    .infinite-slide {
+      width: 240px;
+      height: 160px;
     }
 
-    .nav {
-      width: 36px;
-      height: 36px;
-      font-size: 1.2rem;
+    .infinite-track {
+      animation-duration: 14s;
     }
   }
 </style>
