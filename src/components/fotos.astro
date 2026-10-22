@@ -1,0 +1,208 @@
+---
+const ImageCollage = [
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
+  "https://res.cloudinary.com/dlgeap8h0/image/upload/f_auto,q_auto/v1772633988/ROOFTOP_s52xek.jpg",
+];
+---
+
+<section class="gallery-section">
+
+
+  <div class="carousel" aria-label="Carrusel de imágenes">
+    <div class="carousel-track">
+      {ImageCollage.map((src, index) => (
+        <div class="slide">
+          <img src={src} alt={`Imagen ${index + 1}`} loading={index === 0 ? 'eager' : 'lazy'} />
+        </div>
+      ))}
+    </div>
+
+    <button class="nav prev" type="button" aria-label="Imagen anterior">‹</button>
+    <button class="nav next" type="button" aria-label="Imagen siguiente">›</button>
+
+    <div class="dots" aria-label="Indicadores del carrusel">
+      {ImageCollage.map((_, index) => (
+        <button
+          class={`dot ${index === 0 ? 'active' : ''}`}
+          type="button"
+          aria-label={`Ir a la imagen ${index + 1}`}
+          data-index={index}
+        ></button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const carousel = document.querySelector('.carousel');
+
+  if (carousel) {
+    const track = carousel.querySelector('.carousel-track');
+    const slides = Array.from(carousel.querySelectorAll('.slide'));
+    const dots = Array.from(carousel.querySelectorAll('.dot'));
+    const prevBtn = carousel.querySelector('.nav.prev');
+    const nextBtn = carousel.querySelector('.nav.next');
+
+    let currentIndex = 0;
+
+    const updateCarousel = () => {
+      if (!track) return;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    };
+
+    prevBtn?.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      updateCarousel();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      updateCarousel();
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        currentIndex = Number(dot.dataset.index || 0);
+        updateCarousel();
+      });
+    });
+
+    updateCarousel();
+  }
+</script>
+
+<style>
+  .gallery-section {
+    width: min(1100px, calc(100% - 32px));
+    margin: 48px auto 0;
+    padding: 20px 0 0;
+  }
+
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .section-label {
+    display: inline-block;
+    color: #b89146;
+    font-size: 0.8rem;
+    letter-spacing: 0.18rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .gallery-header h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    color: #1d1d1d;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #f3efe8;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    height: 480px;
+  }
+
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .nav:hover {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .prev {
+    left: 16px;
+  }
+
+  .next {
+    right: 16px;
+  }
+
+  .dots {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s ease;
+  }
+
+  .dot.active {
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.18);
+  }
+
+  @media (max-width: 640px) {
+    .slide {
+      height: 320px;
+    }
+
+    .nav {
+      width: 36px;
+      height: 36px;
+      font-size: 1.2rem;
+    }
+  }
+</style>
